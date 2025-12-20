@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadija Jumani - Data Science Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom Config & Styles -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                fontFamily: {
+                    sans: ['Outfit', 'sans-serif'],
+                    body: ['Inter', 'sans-serif'],
+                },
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float-delayed 8s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'float-delayed': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(20px)' },
+                        }
+                    },
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f1f5f9',
+                            muted: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        /* Grid Pattern Background */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                              linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .dark .bg-grid-pattern {
+            background-image: linear-gradient(to right, #1e293b 1px, transparent 1px),
+                              linear-gradient(to bottom, #1e293b 1px, transparent 1px);
+        }
+
+        /* Animation Classes for JavaScript Observer */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        /* 3D Tilt Effect Container */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+        
+        .tilt-content {
+            transition: transform 0.1s ease-out; /* Smooth movement */
+        }
+
+        /* Blinking Cursor for Typing Effect */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #0d9488, #2563eb, #9333ea);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 selection:bg-teal-100 selection:text-teal-900 overflow-x-hidden transition-colors duration-300">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Interactive Background Blobs (Parallax) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div id="blob1" class="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-teal-200/30 dark:bg-teal-900/20 rounded-full blur-[100px] transition-transform duration-1000 ease-out"></div>
+        <div id="blob2" class="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-[100px] transition-transform duration-1000 ease-out"></div>
+        <div class="absolute inset-0 bg-grid-pattern opacity-[0.03] dark:opacity-[0.05]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-b border-transparent py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <div onclick="scrollToSection('home')" 
+                 class="group flex items-center gap-2 cursor-pointer select-none">
+                <img src="khadija.png" alt="Khadija" class="w-10 h-10 rounded-full object-cover shadow-lg group-hover:rotate-12 transition-transform duration-300 border border-slate-200 dark:border-slate-700">
+                <span class="text-xl font-bold text-slate-800 dark:text-white tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">Khadija Jumani</span>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <button onclick="scrollToSection('home')" class="nav-link text-sm font-medium transition-all duration-300 hover:text-teal-600 dark:hover:text-teal-400 relative group text-slate-600 dark:text-slate-300" data-section="home">
+                    Home
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="scrollToSection('about')" class="nav-link text-sm font-medium transition-all duration-300 hover:text-teal-600 dark:hover:text-teal-400 relative group text-slate-600 dark:text-slate-300" data-section="about">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="scrollToSection('experience')" class="nav-link text-sm font-medium transition-all duration-300 hover:text-teal-600 dark:hover:text-teal-400 relative group text-slate-600 dark:text-slate-300" data-section="experience">
+                    Experience
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                 <button onclick="scrollToSection('projects')" class="nav-link text-sm font-medium transition-all duration-300 hover:text-teal-600 dark:hover:text-teal-400 relative group text-slate-600 dark:text-slate-300" data-section="projects">
+                    Projects
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="scrollToSection('education')" class="nav-link text-sm font-medium transition-all duration-300 hover:text-teal-600 dark:hover:text-teal-400 relative group text-slate-600 dark:text-slate-300" data-section="education">
+                    Education
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 dark:bg-teal-400 transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                
+                <!-- Dark Mode Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                </button>
+
+                <a href="#contact" onclick="scrollToSection('contact')"
+                   class="bg-slate-900 dark:bg-teal-600 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-teal-600 dark:hover:bg-teal-700 transition-all hover:shadow-lg shadow-teal-600/20 active:scale-95 flex items-center gap-2">
+                    <span>Let's Talk</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="flex items-center gap-4 md:hidden">
+                <button id="mobile-theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                </button>
+                <button id="mobile-menu-btn" class="p-2 text-slate-700 dark:text-slate-200 hover:text-teal-600 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i data-lucide="menu" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden max-h-0 opacity-0">
+            <div class="container mx-auto px-6 py-6 flex flex-col space-y-4">
+                <button onclick="scrollToSection('home')" class="text-lg font-medium text-left px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Home</button>
+                <button onclick="scrollToSection('about')" class="text-lg font-medium text-left px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">About</button>
+                <button onclick="scrollToSection('experience')" class="text-lg font-medium text-left px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Experience</button>
+                 <button onclick="scrollToSection('projects')" class="text-lg font-medium text-left px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Projects</button>
+                <button onclick="scrollToSection('education')" class="text-lg font-medium text-left px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Education</button>
+                <a href="mailto:khadijajumani0208@gmail.com" class="bg-teal-600 text-white px-4 py-3 rounded-xl text-center font-medium shadow-md">
+                    Contact Me
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                <div class="w-full md:w-1/2 lg:w-3/5">
+                    <div class="reveal delay-100">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-bold tracking-wide text-teal-700 dark:text-teal-300 uppercase bg-teal-50 dark:bg-teal-900/30 backdrop-blur-sm rounded-full border border-teal-200 dark:border-teal-800 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                            <span>Available for Opportunities</span>
+                        </div>
+                    </div>
+                    
+                    <div class="reveal delay-200">
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 dark:text-white mb-6 leading-[1.1] tracking-tight">
+                            I am a <br />
+                            <span id="typing-text" class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-blue-600 to-purple-600"></span><span class="cursor-blink text-teal-600 dark:text-teal-400">|</span>
+                        </h1>
+                    </div>
+
+                    <div class="reveal delay-300">
+                        <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl leading-relaxed">
+                            Hi, I'm <span class="font-bold text-slate-900 dark:text-white">Khadija Jumani</span>. A Data Science Enthusiast, Passionate Lecturer, and Lifelong Learner based in Islamabad. I unlock insights to drive business growth & social impact.
+                        </p>
+                    </div>
+                    
+                    <div class="reveal delay-400">
+                        <div class="flex flex-wrap gap-4">
+                            <a href="mailto:khadijajumani0208@gmail.com" class="group flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-full hover:bg-teal-600 dark:hover:bg-teal-500 hover:text-white transition-all hover:-translate-y-1 shadow-xl shadow-slate-900/20 hover:shadow-teal-600/20">
+                                <i data-lucide="mail" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                                <span class="font-semibold">Email Me</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/khadija-jumani-728872305" target="_blank" class="group flex items-center gap-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-full hover:border-teal-600 dark:hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-lg">
+                                <i data-lucide="linkedin" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <span class="font-semibold">LinkedIn</span>
+                            </a>
+                            <a href="https://www.instagram.com/im_idealizer/" target="_blank" class="group flex items-center gap-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-8 py-4 rounded-full hover:border-pink-600 dark:hover:border-pink-500 hover:text-pink-600 dark:hover:text-pink-400 transition-all hover:-translate-y-1 shadow-sm hover:shadow-lg">
+                                <i data-lucide="instagram" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                <span class="font-semibold">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reveal delay-500">
+                        <div class="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 text-slate-500 dark:text-slate-400 text-sm font-medium">
+                            <div class="flex items-center gap-2">
+                                <div class="p-2 bg-white dark:bg-slate-800 rounded-full shadow-sm text-teal-600 dark:text-teal-400 border border-slate-100 dark:border-slate-700">
+                                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                                </div>
+                                Islamabad, Pakistan
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="p-2 bg-white dark:bg-slate-800 rounded-full shadow-sm text-blue-600 dark:text-blue-400 border border-slate-100 dark:border-slate-700">
+                                    <i data-lucide="phone" class="w-4 h-4"></i>
+                                </div>
+                                +92 322 9239447
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hero Image -->
+                <div class="hidden md:block w-full md:w-1/2 lg:w-2/5 relative">
+                    <div class="tilt-card cursor-pointer">
+                        <div class="tilt-content relative w-full aspect-square max-w-[500px] mx-auto">
+                            <!-- Decorative elements behind image -->
+                            <div class="absolute inset-0 bg-gradient-to-tr from-teal-500 to-blue-500 rounded-[2rem] -rotate-6 opacity-20 translate-y-4 translate-x-4"></div>
+                            <div class="absolute -top-10 -right-10 w-24 h-24 bg-yellow-400 dark:bg-yellow-500/50 rounded-full blur-2xl opacity-40 animate-pulse-slow"></div>
+                            
+                            <!-- Main Image Container -->
+                            <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border-4 border-white dark:border-slate-700 shadow-2xl overflow-hidden relative z-10">
+                                <img src="khadija.png" alt="Khadija Jumani" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700">
+                                
+                                <!-- Floating Badge -->
+                                <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-lg border border-white/50 dark:border-slate-700 flex items-center gap-3 z-20">
+                                    <div class="w-10 h-10 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center text-teal-600 dark:text-teal-400">
+                                        <i data-lucide="code" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Focus</div>
+                                        <div class="text-sm font-bold text-slate-900 dark:text-white">Data Science</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block text-slate-400 dark:text-slate-500 cursor-pointer" onclick="scrollToSection('about')">
+            <i data-lucide="arrow-down" class="w-6 h-6"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                
+                <!-- Cards Grid -->
+                <div class="w-full lg:w-1/2 order-2 lg:order-1">
+                    <div class="reveal">
+                        <div class="grid grid-cols-2 gap-4 md:gap-6">
+                            <!-- Card 1 -->
+                            <div class="tilt-card h-full">
+                                <div class="tilt-content h-full p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-700 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-teal-50 dark:bg-teal-900/30 rounded-xl flex items-center justify-center mb-4 text-teal-600 dark:text-teal-400">
+                                        <i data-lucide="code" class="w-6 h-6"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Development</h3>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Python, R, Java, Next.js</p>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="tilt-card h-full translate-y-8">
+                                <div class="tilt-content h-full p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-700 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4 text-blue-600 dark:text-blue-400">
+                                        <i data-lucide="database" class="w-6 h-6"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Data Science</h3>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">GenAI, NLP, SQL, ETL</p>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="tilt-card h-full">
+                                <div class="tilt-content h-full p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-purple-200 dark:hover:border-purple-700 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-xl flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400">
+                                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Education</h3>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Lecturer & Curriculum</p>
+                                </div>
+                            </div>
+                            <!-- Card 4 -->
+                            <div class="tilt-card h-full translate-y-8">
+                                <div class="tilt-content h-full p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-xl hover:border-orange-200 dark:hover:border-orange-700 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-orange-50 dark:bg-orange-900/30 rounded-xl flex items-center justify-center mb-4 text-orange-600 dark:text-orange-400">
+                                        <i data-lucide="palette" class="w-6 h-6"></i>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-white text-lg mb-1">Creative</h3>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Graphic Design & UI/UX</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text -->
+                <div class="w-full lg:w-1/2 order-1 lg:order-2">
+                    <div class="reveal delay-200">
+                        <div class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                            About Me
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-8">
+                            Unlocking Insights to <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-600">Drive Innovation.</span>
+                        </h2>
+                        <div class="space-y-6 text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                            <p>
+                                I am a multi-disciplinary professional blending <strong>Data Science, Web Development, and Design</strong>. As a Data Analyst and Engineer, I specialize in Generative AI, NLP, LLMs, and Data Visualization. 
+                            </p>
+                            <p>
+                                Beyond technical expertise, I am a passionate <strong>Lecturer</strong> and <strong>Graphic Designer</strong> with experience in leadership and event management. My goal is to leverage advanced technologies to create impactful learning experiences and business solutions.
+                            </p>
+                        </div>
+                        
+                        <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"># Generative AI</span>
+                            <span class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"># Data Engineering</span>
+                            <span class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"># Web Development</span>
+                            <span class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-colors shadow-sm"># Leadership</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section (Portfolio Style Grid) -->
+    <section id="experience" class="py-24 bg-slate-50/50 dark:bg-slate-800/30 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="reveal">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                    <div>
+                        <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-teal-600 dark:text-teal-400 uppercase bg-teal-100 dark:bg-teal-900/50 rounded-full">
+                            My Career
+                        </span>
+                        <h2 class="text-4xl font-bold text-slate-900 dark:text-white">Work History</h2>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 max-w-sm text-sm md:text-base">
+                        A showcase of my professional journey, highlighting key roles and impact in education and management.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Staggered Grid Layout (Portfolio Style) -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
+                
+                <!-- Card 1: BZU -->
+                <div class="reveal delay-100 h-full">
+                    <div class="tilt-card h-full group">
+                        <div class="tilt-content h-full bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-2xl hover:border-teal-100 dark:hover:border-teal-700 transition-all duration-300 flex flex-col relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 dark:bg-teal-900/20 rounded-full blur-2xl -mr-16 -mt-16 transition-opacity opacity-0 group-hover:opacity-100"></div>
+                            
+                            <div class="mb-6 flex justify-between items-start">
+                                <div class="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-xl text-teal-600 dark:text-teal-400">
+                                    <i data-lucide="mic-2" class="w-6 h-6"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">June 2025 - Aug 2025</span>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Lecturer | Intern</h3>
+                            <p class="text-teal-600 dark:text-teal-400 font-medium mb-6">Bahauddin Zakariya University (BZU)</p>
+                            
+                            <ul class="space-y-3 mb-8 flex-grow">
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5"></i>Shared knowledge with peers in CS, ML, and GenAI.</li>
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5"></i>Boosted confidence and deepened passion for teaching.</li>
+                            </ul>
+                            
+                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2 text-sm text-slate-400">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i> Punjab, Pakistan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Amnet Global -->
+                <div class="reveal delay-200 h-full">
+                    <div class="tilt-card h-full group">
+                        <div class="tilt-content h-full bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-2xl hover:border-blue-100 dark:hover:border-blue-700 transition-all duration-300 flex flex-col relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-blue-900/20 rounded-full blur-2xl -mr-16 -mt-16 transition-opacity opacity-0 group-hover:opacity-100"></div>
+
+                            <div class="mb-6 flex justify-between items-start">
+                                <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-blue-600 dark:text-blue-400">
+                                    <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">Jan 2025 - Aug 2025</span>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Lecturer of ML & AI</h3>
+                            <p class="text-blue-600 dark:text-blue-400 font-medium mb-6">Amnet Global</p>
+                            
+                            <ul class="space-y-3 mb-8 flex-grow">
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>Delivered lectures on Machine Learning and Artificial Intelligence.</li>
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>Mentored students in advanced tech concepts.</li>
+                            </ul>
+                            
+                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2 text-sm text-slate-400">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i> Pakistan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Think Study Learn -->
+                <div class="reveal delay-300 h-full">
+                    <div class="tilt-card h-full group">
+                        <div class="tilt-content h-full bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-2xl hover:border-purple-100 dark:hover:border-purple-700 transition-all duration-300 flex flex-col relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-50 dark:bg-purple-900/20 rounded-full blur-2xl -mr-16 -mt-16 transition-opacity opacity-0 group-hover:opacity-100"></div>
+
+                            <div class="mb-6 flex justify-between items-start">
+                                <div class="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl text-purple-600 dark:text-purple-400">
+                                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">June 2024 - May 2025</span>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Content Manager | Lecturer</h3>
+                            <p class="text-purple-600 dark:text-purple-400 font-medium mb-6">Think Study Learn</p>
+                            
+                            <ul class="space-y-3 mb-8 flex-grow">
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5"></i>Developed curriculum for UK & Pakistan educational systems.</li>
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5"></i>Lecturer for MDCAT and entry test preparations.</li>
+                            </ul>
+                            
+                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2 text-sm text-slate-400">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i> United Kingdom
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Oriflame -->
+                <div class="reveal delay-400 h-full">
+                    <div class="tilt-card h-full group">
+                        <div class="tilt-content h-full bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-2xl hover:border-orange-100 dark:hover:border-orange-700 transition-all duration-300 flex flex-col relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 dark:bg-orange-900/20 rounded-full blur-2xl -mr-16 -mt-16 transition-opacity opacity-0 group-hover:opacity-100"></div>
+
+                            <div class="mb-6 flex justify-between items-start">
+                                <div class="p-3 bg-orange-50 dark:bg-orange-900/30 rounded-xl text-orange-600 dark:text-orange-400">
+                                    <i data-lucide="megaphone" class="w-6 h-6"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-bold text-slate-600 dark:text-slate-300">2022 - 2023</span>
+                            </div>
+                            
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-1">Social Media Manager</h3>
+                            <p class="text-orange-600 dark:text-orange-400 font-medium mb-6">Oriflame Cosmetics</p>
+                            
+                            <ul class="space-y-3 mb-8 flex-grow">
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5"></i>Executed strategies to enhance brand awareness.</li>
+                                <li class="flex gap-3 text-slate-600 dark:text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5"></i>Managed content creation and community engagement.</li>
+                            </ul>
+                            
+                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700 flex items-center gap-2 text-sm text-slate-400">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i> Pakistan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="reveal">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                    <div>
+                        <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-purple-600 dark:text-purple-400 uppercase bg-purple-100 dark:bg-purple-900/50 rounded-full">
+                            Portfolio
+                        </span>
+                        <h2 class="text-4xl font-bold text-slate-900 dark:text-white">Featured Projects</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="reveal delay-100">
+                    <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+                        <div class="h-48 bg-gradient-to-br from-teal-400 to-blue-500 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black/10"></div>
+                            <div class="absolute bottom-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-lg">
+                                <i data-lucide="activity" class="text-white w-6 h-6"></i>
+                            </div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Predictive Health Analytics</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 flex-grow">
+                                Developed a machine learning model to predict patient readmission rates using Python and Scikit-learn, achieving 85% accuracy.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">ML</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="reveal delay-200">
+                    <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+                         <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-500 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                             <div class="absolute inset-0 bg-black/10"></div>
+                            <div class="absolute bottom-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-lg">
+                                <i data-lucide="bar-chart-2" class="text-white w-6 h-6"></i>
+                            </div>
+                         </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">E-Commerce Dashboard</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 flex-grow">
+                                Interactive dashboard visualizing sales trends and customer segmentation using SQL for data extraction and Tableau for display.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">SQL</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">Tableau</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="reveal delay-300">
+                    <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+                         <div class="h-48 bg-gradient-to-br from-orange-400 to-red-500 relative overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                             <div class="absolute inset-0 bg-black/10"></div>
+                            <div class="absolute bottom-4 left-4 p-2 bg-white/20 backdrop-blur-md rounded-lg">
+                                <i data-lucide="message-square" class="text-white w-6 h-6"></i>
+                            </div>
+                         </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Sentiment Analysis</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 flex-grow">
+                                NLP project analyzing social media sentiment regarding climate change using Python, NLTK, and various Twitter APIs.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">NLP</span>
+                                <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full">Python</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-24 bg-white dark:bg-slate-900 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="reveal">
+                <div class="text-center mb-20">
+                    <span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-900/50 rounded-full">
+                        Academic Background
+                    </span>
+                    <h2 class="text-4xl font-bold text-slate-900 dark:text-white">Education</h2>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="reveal delay-100 h-full">
+                    <div class="h-full group relative p-10 bg-gradient-to-br from-teal-50/50 to-white dark:from-teal-900/20 dark:to-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 hover:border-teal-300 dark:hover:border-teal-700 transition-all hover:shadow-2xl hover:-translate-y-2 overflow-hidden">
+                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-teal-100/50 dark:bg-teal-900/30 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                        
+                        <div class="relative z-10 flex flex-col h-full">
+                             <div class="w-16 h-16 bg-white dark:bg-slate-900 rounded-2xl shadow-sm flex items-center justify-center text-teal-600 dark:text-teal-400 mb-8">
+                                <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                            </div>
+                            
+                            <span class="inline-block self-start px-4 py-1.5 bg-teal-600 dark:bg-teal-500 text-white text-xs font-bold rounded-full mb-4 shadow-lg shadow-teal-600/20">
+                                2023 - 2027
+                            </span>
+                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">BS Data Science</h3>
+                            <p class="text-teal-800 dark:text-teal-300 font-medium mb-6">COMSATS University Islamabad</p>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                                Rigorous coursework focusing on Artificial Intelligence, Machine Learning algorithms, Data Visualization, and Big Data technologies.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal delay-200 h-full">
+                    <div class="h-full group relative p-10 bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-900/20 dark:to-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-2xl hover:-translate-y-2 overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-100/50 dark:bg-blue-900/30 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+
+                        <div class="relative z-10 flex flex-col h-full">
+                            <div class="w-16 h-16 bg-white dark:bg-slate-900 rounded-2xl shadow-sm flex items-center justify-center text-blue-600 dark:text-blue-400 mb-8">
+                                <i data-lucide="book-open" class="w-8 h-8"></i>
+                            </div>
+
+                            <span class="inline-block self-start px-4 py-1.5 bg-blue-600 dark:bg-blue-500 text-white text-xs font-bold rounded-full mb-4 shadow-lg shadow-blue-600/20">
+                                2019 - 2021
+                            </span>
+                            <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Intermediate</h3>
+                            <p class="text-blue-800 dark:text-blue-300 font-medium mb-6">Multan Public School & College</p>
+                            <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                                Developed a robust foundation in scientific principles with a transition towards analytical thinking and logical reasoning.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-slate-900 dark:bg-black text-white relative overflow-hidden">
+        <!-- Background Decorations -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+             <div class="absolute top-0 left-0 w-64 h-64 bg-teal-500 rounded-full blur-[100px] opacity-20 animate-pulse-slow"></div>
+             <div class="absolute bottom-0 right-0 w-80 h-80 bg-blue-500 rounded-full blur-[100px] opacity-20 animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="reveal">
+                <div class="text-center mb-20">
+                    <h2 class="text-4xl font-bold mb-4 text-white">Technical & Soft Skills</h2>
+                    <div class="w-24 h-1.5 bg-gradient-to-r from-teal-500 to-blue-500 mx-auto rounded-full"></div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+                <div class="reveal delay-100 h-full">
+                    <div class="h-full bg-slate-800/50 backdrop-blur-md p-8 rounded-3xl border border-slate-700 hover:border-teal-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(20,184,166,0.1)]">
+                        <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 text-white">
+                            <div class="p-3 bg-teal-500/10 rounded-xl text-teal-400">
+                                <i data-lucide="code" class="w-6 h-6"></i>
+                            </div>
+                            Programming & Tech
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Relational DB Design</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">SQL Optimization</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Python</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">R</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Java</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Next.js</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Power BI</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Tableau</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-teal-500 hover:text-teal-400 transition-colors cursor-default">Data Analysis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal delay-200 h-full">
+                    <div class="h-full bg-slate-800/50 backdrop-blur-md p-8 rounded-3xl border border-slate-700 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+                        <h3 class="text-2xl font-bold mb-8 flex items-center gap-3 text-white">
+                            <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400">
+                                <i data-lucide="palette" class="w-6 h-6"></i>
+                            </div>
+                            Creative & Soft Skills
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Canva</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Figma</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Adobe Photoshop</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">CapCut</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Lecturing</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Content Creation</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Social Media Marketing</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Event Management</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Leadership</span>
+                            <span class="skill-tag px-4 py-2 bg-slate-800 rounded-lg text-sm border border-slate-600 hover:border-blue-500 hover:text-blue-400 transition-colors cursor-default">Communication</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications & Awards (Gallery Style) -->
+    <section id="certifications" class="py-24 bg-white dark:bg-slate-900">
+        <div class="container mx-auto px-6">
+            <div class="reveal">
+                <div class="flex items-center justify-between mb-16">
+                    <h2 class="text-4xl font-bold text-slate-900 dark:text-white">Certifications</h2>
+                    <div class="hidden md:block h-px flex-grow bg-slate-100 dark:bg-slate-700 ml-8"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cert 1 -->
+                <div class="reveal delay-100">
+                    <div class="group h-full p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 opacity-5 rounded-bl-full -mr-4 -mt-4"></div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-6">
+                            <i data-lucide="award" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Design Fest</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">DESIGN FEST 2024 ' NUST</p>
+                        <div class="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-blue-500 origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert 2 -->
+                <div class="reveal delay-200">
+                    <div class="group h-full p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 opacity-5 rounded-bl-full -mr-4 -mt-4"></div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-6">
+                            <i data-lucide="star" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">FIT 2025</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Frontiers of Information Technology</p>
+                        <div class="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-purple-500 origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert 3 -->
+                <div class="reveal delay-300">
+                    <div class="group h-full p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 opacity-5 rounded-bl-full -mr-4 -mt-4"></div>
+                        <div class="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center mb-6">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Database Systems</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Modern Database Certification</p>
+                        <div class="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-orange-500 origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cert 4 -->
+                <div class="reveal delay-400">
+                    <div class="group h-full p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-teal-500 to-emerald-500 opacity-5 rounded-bl-full -mr-4 -mt-4"></div>
+                        <div class="w-12 h-12 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-6">
+                            <i data-lucide="award" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2 text-slate-900 dark:text-white">Merit Certificates</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Comsats University Islamabad</p>
+                        <div class="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="w-full h-full bg-teal-500 origin-left transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (Visual Form) -->
+    <section id="contact" class="py-24 bg-slate-50 dark:bg-slate-800/50">
+        <div class="container mx-auto px-6">
+            <div class="bg-slate-900 dark:bg-black rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-center md:text-left">
+                <!-- Decorative Circles -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl -ml-16 -mb-16"></div>
+
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                    <div class="md:w-1/2">
+                         <span class="text-teal-400 font-bold tracking-wider uppercase text-sm mb-2 block">Get in Touch</span>
+                         <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Let's create something <br/> amazing together.</h2>
+                         <p class="text-slate-400 text-lg mb-8 max-w-md">Open for opportunities in Data Science, Content Creation, and Educational Technology.</p>
+                         
+                         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                             <a href="mailto:khadijajumani0208@gmail.com" class="bg-teal-500 text-white px-8 py-4 rounded-full font-bold hover:bg-teal-400 transition-all shadow-lg shadow-teal-500/30">
+                                 Send an Email
+                             </a>
+                             <a href="https://drive.google.com/file/d/1qpxztGsVsPFkT5sO_w77mDMsjpgSjU1t/view?usp=sharing" class="bg-slate-800 dark:bg-slate-900 text-white border border-slate-700 px-8 py-4 rounded-full font-bold hover:bg-slate-700 transition-all">
+                                 Download CV
+                             </a>
+                         </div>
+                    </div>
+
+                    <!-- Visual Form Representation -->
+                    <div class="md:w-1/2 w-full max-w-md bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+                        <div class="space-y-4 opacity-50 pointer-events-none select-none">
+                            <div class="h-12 bg-white/10 rounded-xl w-full"></div>
+                            <div class="h-12 bg-white/10 rounded-xl w-full"></div>
+                            <div class="h-32 bg-white/10 rounded-xl w-full"></div>
+                            <div class="h-12 bg-teal-500/50 rounded-xl w-1/3"></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                             <div class="text-center">
+                                 <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
+                                     <i data-lucide="mail" class="w-8 h-8 text-white"></i>
+                                 </div>
+                                 <p class="text-white font-medium">Click the button to email directly!</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 py-12 border-t border-slate-100 dark:border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">KJ.</div>
+                
+                <div class="flex gap-6 text-slate-500 dark:text-slate-400">
+                    <a href="#" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Home</a>
+                    <a href="#about" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">About</a>
+                    <a href="#experience" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Experience</a>
+                     <a href="#projects" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Projects</a>
+                    <a href="#contact" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Contact</a>
+                </div>
+
+                <p class="text-slate-400 text-sm">
+                    &copy; <span id="year"></span> Khadija Jumani.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 0. Dark Mode Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+        const html = document.documentElement;
+
+        // Check local storage
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        function toggleTheme() {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+
+
+        // 1. Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isMenuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.style.maxHeight = '500px';
+                mobileMenu.style.opacity = '1';
+                mobileMenuBtn.innerHTML = '<i data-lucide="x"></i>';
+                lucide.createIcons();
+            } else {
+                mobileMenu.style.maxHeight = '0';
+                mobileMenu.style.opacity = '0';
+                mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
+                lucide.createIcons();
+            }
+        });
+
+        // 2. Scroll Animation (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(revealCallback, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // 3. Scroll to Section
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const offset = 80;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                if (isMenuOpen) {
+                    mobileMenu.style.maxHeight = '0';
+                    mobileMenu.style.opacity = '0';
+                    isMenuOpen = false;
+                    mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        // 4. Navbar Scroll Effect & Scroll Progress
+        const navbar = document.getElementById('navbar');
+        const scrollProgress = document.getElementById('scroll-progress');
+
+        window.addEventListener('scroll', () => {
+            // Navbar Style
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-sm', 'bg-white/80', 'dark:bg-slate-900/80');
+                navbar.classList.remove('bg-transparent', 'py-4');
+                navbar.classList.add('py-3');
+            } else {
+                navbar.classList.remove('shadow-sm', 'bg-white/80', 'dark:bg-slate-900/80', 'py-3');
+                navbar.classList.add('bg-transparent', 'py-4');
+            }
+
+            // Scroll Progress
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            scrollProgress.style.width = scrolled + "%";
+        });
+
+        // 5. Typing Effect
+        const textElement = document.getElementById('typing-text');
+        const roles = ["Data Scientist", "Lecturer", "Web Developer", "Graphic Designer"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function type() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                textElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // Pause at end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                typeSpeed = 500; // Pause before new word
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+
+        // 6. 3D Tilt Effect (Vanilla JS)
+        const tiltCards = document.querySelectorAll('.tilt-card');
+
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                const content = card.querySelector('.tilt-content');
+                if (content) {
+                     content.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                const content = card.querySelector('.tilt-content');
+                if (content) {
+                    content.style.transform = `rotateX(0) rotateY(0) scale(1)`;
+                }
+            });
+        });
+
+        // 7. Parallax Background
+        document.addEventListener('mousemove', (e) => {
+            const blob1 = document.getElementById('blob1');
+            const blob2 = document.getElementById('blob2');
+            
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            blob1.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            blob2.style.transform = `translate(${-x * 30}px, ${-y * 30}px)`;
+        });
+
+    </script>
+</body>
+</html>
+
