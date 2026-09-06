@@ -1,1 +1,1 @@
-# Academic and Content Creation Portfolio 
+# Portfolio
